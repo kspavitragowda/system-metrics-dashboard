@@ -14,7 +14,7 @@ def dashboard():
 @app.route("/api/metrics")
 def metrics():
     memory = psutil.virtual_memory()
-    disk = psutil.disk_usage("/")
+    disk = psutil.disk_usage("/").percent
     cpu = psutil.cpu_percent(interval=0.2)
     boot_time = psutil.boot_time()
 
