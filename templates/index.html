@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1220">
+  <title>System Metrics Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="brand-mark"><span></span><span></span><span></span></div>
+        <div><strong>Pulse</strong><small>System Monitor</small></div>
+      </div>
+      <div class="nav-label">MONITORING</div>
+      <a class="nav-item active" href="/"><span class="nav-icon">▦</span> Overview</a>
+      <div class="sidebar-note">
+        <div class="status-dot"></div>
+        <div><strong>Monitoring active</strong><small>Refreshing every 2 seconds</small></div>
+      </div>
+      <div class="sidebar-footer">CLANE Subject Project<br><span>System Metrics Dashboard</span></div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">INFRASTRUCTURE / OVERVIEW</div>
+          <h1>System overview</h1>
+          <p class="subtitle">A real-time snapshot of your system's health.</p>
+        </div>
+        <div class="topbar-right">
+          <div class="live-pill"><span class="pulse"></span> LIVE</div>
+          <div class="time-block"><small>LAST UPDATED</small><strong id="last-updated">Waiting for data…</strong></div>
+        </div>
+      </header>
+
+      <section class="summary-row">
+        <div class="summary-card">
+          <div class="summary-icon purple">⌘</div>
+          <div><span class="summary-label">HOST SYSTEM</span><strong id="system-name">Detecting…</strong><small id="hostname">Reading system information</small></div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-icon green">✓</div>
+          <div><span class="summary-label">SERVICE STATUS</span><strong id="service-status">Checking…</strong><small id="service-detail">Waiting for first response</small></div>
+        </div>
+        <div class="summary-card">
+          <div class="summary-icon orange">◷</div>
+          <div><span class="summary-label">SESSION UPTIME</span><strong id="uptime">—</strong><small>Since dashboard process started</small></div>
+        </div>
+      </section>
+
+      <div class="section-heading">
+        <div><h2>Resource utilization</h2><p>Live CPU, memory and storage readings</p></div>
+        <div class="refresh-label"><span class="refresh-symbol">↻</span> Auto-refresh enabled</div>
+      </div>
+
+      <section class="metric-grid">
+        <article class="metric-card">
+          <div class="card-top"><div class="metric-title"><span class="metric-icon cpu-icon">⌁</span><div><h3>CPU usage</h3><p>Processor utilization</p></div></div><span class="tag">PROCESSOR</span></div>
+          <div class="metric-number"><strong id="cpu-value">—</strong><span>%</span></div>
+          <div class="progress-track"><div id="cpu-bar" class="progress-fill cpu-fill" style="width:0%"></div></div>
+          <div class="metric-bottom"><span>Current load</span><strong id="cpu-state">Collecting data</strong></div>
+        </article>
+
+        <article class="metric-card">
+          <div class="card-top"><div class="metric-title"><span class="metric-icon memory-icon">▤</span><div><h3>Memory usage</h3><p>Random access memory</p></div></div><span class="tag">RAM</span></div>
+          <div class="metric-number"><strong id="memory-value">—</strong><span>%</span></div>
+          <div class="progress-track"><div id="memory-bar" class="progress-fill memory-fill" style="width:0%"></div></div>
+          <div class="metric-bottom"><span id="memory-detail">Used — of — GB</span><strong id="memory-state">Collecting data</strong></div>
+        </article>
+
+        <article class="metric-card">
+          <div class="card-top"><div class="metric-title"><span class="metric-icon disk-icon">▰</span><div><h3>Disk usage</h3><p>Storage utilization</p></div></div><span class="tag">STORAGE</span></div>
+          <div class="metric-number"><strong id="disk-value">—</strong><span>%</span></div>
+          <div class="progress-track"><div id="disk-bar" class="progress-fill disk-fill" style="width:0%"></div></div>
+          <div class="metric-bottom"><span id="disk-detail">Used — of — GB</span><strong id="disk-state">Collecting data</strong></div>
+        </article>
+      </section>
+
+      <section class="lower-grid">
+        <article class="panel">
+          <div class="panel-heading"><div><h2>Health summary</h2><p>Threshold-based overview of reported metrics</p></div><span class="panel-symbol">✦</span></div>
+          <div class="health-list">
+            <div class="health-row"><span class="health-indicator" id="cpu-indicator"></span><div class="health-copy"><strong>CPU</strong><small>Processor load</small></div><strong class="health-value" id="cpu-health">—</strong></div>
+            <div class="health-row"><span class="health-indicator" id="memory-indicator"></span><div class="health-copy"><strong>Memory</strong><small>RAM consumption</small></div><strong class="health-value" id="memory-health">—</strong></div>
+            <div class="health-row"><span class="health-indicator" id="disk-indicator"></span><div class="health-copy"><strong>Disk</strong><small>Storage capacity</small></div><strong class="health-value" id="disk-health">—</strong></div>
+          </div>
+          <div class="health-footnote">Healthy &lt; 70% · Warning 70–89% · Critical ≥ 90%</div>
+        </article>
+        <article class="panel info-panel">
+          <div class="panel-heading"><div><h2>About this dashboard</h2><p>How the project works</p></div><span class="panel-symbol">ⓘ</span></div>
+          <div class="pipeline">
+            <div class="pipeline-step"><span class="pipeline-number">01</span><div><strong>Collect</strong><small>Python and psutil read system metrics.</small></div></div>
+            <div class="pipeline-line"></div>
+            <div class="pipeline-step"><span class="pipeline-number">02</span><div><strong>Serve</strong><small>Flask returns the readings as JSON.</small></div></div>
+            <div class="pipeline-line"></div>
+            <div class="pipeline-step"><span class="pipeline-number">03</span><div><strong>Display</strong><small>JavaScript updates the dashboard every 2 seconds.</small></div></div>
+          </div>
+        </article>
+      </section>
+
+      <footer><span><span class="footer-dot"></span> System metrics dashboard</span><span>Built with Flask · psutil · HTML/CSS/JS · Docker</span></footer>
+      <div id="error-banner" class="error-banner" role="status" hidden>Unable to fetch metrics. Retrying automatically…</div>
+    </main>
+  </div>
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
